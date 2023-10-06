@@ -34,11 +34,11 @@ LR seem to work fine with 1e-3, 1e-4 seem to lead to very inconsistent results
 GAMMA = 0.99  # discount factor, greater means more importance to future rewards
 EPS_START = 1
 EPS_END = 0.05
-EPS_DECAY = 1_000_000
+EPS_DECAY = 100_000
 TAU = 0.001  # for soft update of target parameters, so greater means more soft
 LR = 1e-3  # learning rate, greater means faster learning
 
-BATCH_SIZE = 128  # 128 is suggested batch size for DQN
+BATCH_SIZE = 64  # 128 is suggested batch size for DQN
 
 steps_done = 0
 

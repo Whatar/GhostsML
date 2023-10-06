@@ -6,7 +6,8 @@ from entity import Entity
 from sprites import PacmanSprites
 import random
 
-MANA = 64
+MANA = 16
+COOLDOWN = 1
 
 class Pacman(Entity):
     def __init__(self, node, strength=0):
@@ -65,7 +66,7 @@ class Pacman(Entity):
 
         if self.mana == 0:
             self.mana_delay += dt
-            if self.mana_delay > 10:
+            if self.mana_delay > COOLDOWN:
                 self.mana = MANA
                 self.mana_delay = 0
 
