@@ -1,5 +1,5 @@
 
-![Ghosts ML](https://github.com/Whatar/GhostsML/imgs/GhostsML.gif)
+![Ghosts ML](https://github.com/Whatar/GhostsML/blob/main/imgs/GhostsML.gif)
 
 # Metodi di Intelligenza Artificiale per personaggi non giocanti nei videogiochi
 
