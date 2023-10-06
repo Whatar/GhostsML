@@ -1,7 +1,5 @@
 
-GIF DEI FANTASMI CHE INSEGUONO PACMAN
-
-  
+![Ghosts ML](https://github.com/Whatar/GhostsML/imgs/GhostsML.gif)
 
 # Metodi di Intelligenza Artificiale per personaggi non giocanti nei videogiochi
 

@@ -1,0 +1,2 @@
+# ignore pycache in /src
+/src/__pycache__/
