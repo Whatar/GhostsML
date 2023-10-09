@@ -243,7 +243,7 @@ def optimize_model():
     optimizer.zero_grad()
     loss.backward()
     # In-place gradient clipping, to prevent the gradient from exploding, we clip the gradient to a maximum value of 1
-    torch.nn.utils.clip_grad_norm_(policy_net.parameters(), 100)
+    torch.nn.utils.clip_grad_norm_(policy_net.parameters(), 1)
 
     optimizer.step()
 
