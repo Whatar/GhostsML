@@ -99,7 +99,7 @@ def select_action(state, game, dt):
         eps_threshold = EPS_END + (EPS_START - EPS_END) * \
             math.exp(-1. * steps_done / EPS_DECAY)
     else:
-        eps_threshold = 0.00
+        eps_threshold = 0.01
     steps_done += 1
     if sample > eps_threshold:
         with torch.no_grad():
@@ -313,7 +313,6 @@ class Ghost(Entity):
                     self.reverseDirection()
 
     def scatter(self):
-        print("Scatter not implemented")
         self.goal = Vector2()
 
     def chase(self):
@@ -407,13 +406,16 @@ class Clyde(Ghost):
 
 
 class GhostGroup(object):
-    def __init__(self, node, pacman, training):
+    def __init__(self, node, pacman, training, ghosts4):
         self.blinky = Blinky(node, pacman)
         self.pinky = Pinky(node, pacman)
-        # self.inky = Inky(node, pacman, self.blinky)
-        # self.clyde = Clyde(node, pacman)
-        # self.ghosts = [self.blinky, self.pinky, self.inky, self.clyde]
-        self.ghosts = [self.blinky, self.pinky]
+        self.ghosts4 = ghosts4
+        if ghosts4:
+            self.inky = Inky(node, pacman, self.blinky)
+            self.clyde = Clyde(node, pacman)
+            self.ghosts = [self.blinky, self.pinky, self.inky, self.clyde]
+        else:
+            self.ghosts = [self.blinky, self.pinky]            
         self.total_reward = 0
         self.frames = 0
         self.resets = 0
@@ -433,9 +435,14 @@ class GhostGroup(object):
         if self.action == None:
             self.blinky.findCell(game)
             self.pinky.findCell(game)
+            if self.ghosts4:
+                self.inky.findCell(game)
+                self.clyde.findCell(game)
         state = self.getState(game)
+
         self.state = state
         action = select_action(state, game, dt)
+
         self.action = action
 
         # we need to convert the action to the 2 actions for each ghost, remembering that -2 = right, -1 = left, 1 = up, 2 = down
@@ -443,9 +450,16 @@ class GhostGroup(object):
         # so we can convert the action to the 2 actions for each ghost by doing:
 
         self.blinky.choice, self.pinky.choice = getAction(action)
+        if self.ghosts4:
+            state2 = self.getState(game)
+            action2 = select_action(state2, game, dt)
+            self.inky.choice, self.clyde.choice = getAction(action2)
 
         self.blinky.findCell(game)
         self.pinky.findCell(game)
+        if self.ghosts4:
+            self.inky.findCell(game)
+            self.clyde.findCell(game)
 
     def completeTraining(self, game, dt):
         if self.action is None:

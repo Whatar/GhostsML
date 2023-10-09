@@ -6,8 +6,8 @@ from entity import Entity
 from sprites import PacmanSprites
 import random
 
-MANA = 16
-COOLDOWN = 1
+MANA = 32
+COOLDOWN = 5
 
 class Pacman(Entity):
     def __init__(self, node, strength=0):
@@ -106,7 +106,7 @@ class Pacman(Entity):
             return self.getValidKeyMedium(game)
         elif self.strength == 2:
             return self.getValidKeyBetter(game)
-        elif self.strength == 4:
+        elif self.strength == 3:
             return self.getValidKeyStrong(game)
 
     def getValidKeyMedium(self, game):

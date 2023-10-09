@@ -27,8 +27,10 @@ DISPLAY = True  # Set to False for no graphics
 FRAMERATE = 50
 TRAINING = False
 DEBUGGING = False
+GRAPH = False
+GHOSTS4 = False
 
-N_GAMES = 1000
+N_GAMES = 100
 
 if "-t" in sys.argv or "--train" in sys.argv:
     TRAINING = True
@@ -43,6 +45,13 @@ if "-d" in sys.argv or "--debug" in sys.argv:
 if "-s" in sys.argv or "--show" in sys.argv:
     FRAMERATE = 9999
 
+if "-g" in sys.argv or "--graph" in sys.argv:
+    FRAMERATE = 9999
+    DISPLAY = False
+    GRAPH = True
+
+if "-4" in sys.argv or "--4ghosts" in sys.argv:
+    GHOSTS4 = True
 
 class GameController(object):
     def __init__(self):
@@ -72,7 +81,7 @@ class GameController(object):
         self.debugging = DEBUGGING
         self.games = 0
         self.terminated = False
-        self.pacman_strength = 2
+        self.pacman_strength = 0
         self.total_score = np.zeros(N_GAMES)
         self.mazedata = MazeData()
         self.frames = 0
@@ -87,6 +96,37 @@ class GameController(object):
         state[3] = self.ghosts.blinky.position.y / TILEHEIGHT
         state[4] = self.ghosts.pinky.position.x / TILEWIDTH
         state[5] = self.ghosts.pinky.position.y / TILEHEIGHT
+
+        # state[6] = self.pacman.direction
+        # state[7] = self.ghosts.blinky.direction
+        # state[8] = self.ghosts.pinky.direction
+
+        # print("State: ", state)
+
+        # normalize the state
+        state[0] = state[0] / 28
+        state[1] = state[1] / 36
+        state[2] = state[2] / 28
+        state[3] = state[3] / 36
+        state[4] = state[4] / 28
+        state[5] = state[5] / 36
+
+        # state[6] = abs((state[6] - 2) / 4)
+        # state[7] = abs((state[7] - 2) / 4)
+        # state[8] = abs((state[8] - 2) / 4)
+
+        return state
+    
+    def getState2(self):
+        # the state is the position of the ghosts and the position of pacman, for a total of 6 values
+        # the state is a 6x1 vector
+        state = np.zeros(6)
+        state[0] = self.pacman.position.x / TILEWIDTH
+        state[1] = self.pacman.position.y / TILEHEIGHT
+        state[2] = self.ghosts.inky.position.x / TILEWIDTH
+        state[3] = self.ghosts.inky.position.y / TILEHEIGHT
+        state[4] = self.ghosts.clyde.position.x / TILEWIDTH
+        state[5] = self.ghosts.clyde.position.y / TILEHEIGHT
 
         # state[6] = self.pacman.direction
         # state[7] = self.ghosts.blinky.direction
@@ -122,16 +162,16 @@ class GameController(object):
 
     def startGame(self):
         # we stop at N_GAMES games and plot the results, and save the plot as an image, and then change the strength of pacman to 2
-        if self.games == N_GAMES:
+        if self.games == N_GAMES and GRAPH:
             plt.plot(self.total_score)
             if self.pacman.strength == 0:
-                plt.savefig('score_weak.png')
                 print("Weak Pacman: ", self.total_score.mean())
             elif self.pacman.strength == 1:
-                plt.savefig('score_medium.png')
                 print("Medium Pacman: ", self.total_score.mean())
+            elif self.pacman.strength == 2:
+                print("Better Pacman: ", self.total_score.mean())
             else:
-                plt.savefig('score_strong.png')
+                plt.savefig('score.png')
                 print("Stronk Pacman: ", self.total_score.mean())
                 exit()
             self.pacman_strength += 1
@@ -151,12 +191,13 @@ class GameController(object):
         self.cells = CellGroup(self.mazedata.obj.name+".txt")
         self.walls = WallGroup(self.mazedata.obj.name+".txt")
         self.ghosts = GhostGroup(
-            self.nodes.getStartTempNode(), self.pacman, training=TRAINING)
+            self.nodes.getStartTempNode(), self.pacman, training=self.training, ghosts4=GHOSTS4)
 
         self.ghosts.pinky.setStartNode(
             self.nodes.getNodeFromTiles(*self.mazedata.obj.addOffset(2, 0)))
-        # self.ghosts.inky.setStartNode(self.nodes.getNodeFromTiles(*self.mazedata.obj.addOffset(0, 3)))
-        # self.ghosts.clyde.setStartNode(self.nodes.getNodeFromTiles(*self.mazedata.obj.addOffset(4, 3)))
+        if GHOSTS4:
+            self.ghosts.inky.setStartNode(self.nodes.getNodeFromTiles(*self.mazedata.obj.addOffset(2, 0)))
+            self.ghosts.clyde.setStartNode(self.nodes.getNodeFromTiles(*self.mazedata.obj.addOffset(2, 0)))
         self.ghosts.setSpawnNode(self.nodes.getNodeFromTiles(
             *self.mazedata.obj.addOffset(2, 3)))
         self.ghosts.blinky.setStartNode(
@@ -164,8 +205,10 @@ class GameController(object):
 
         self.nodes.denyHomeAccess(self.pacman)
         self.nodes.denyHomeAccessList(self.ghosts)
-        # self.ghosts.inky.startNode.denyAccess(RIGHT, self.ghosts.inky)
-        # self.ghosts.clyde.startNode.denyAccess(LEFT, self.ghosts.clyde)
+        if GHOSTS4:
+            self.ghosts.inky.startNode.denyAccess(RIGHT, self.ghosts.inky)
+            self.ghosts.clyde.startNode.denyAccess(LEFT, self.ghosts.clyde)
+
         self.mazedata.obj.denyGhostsAccess(self.ghosts, self.nodes)
 
     def startGame_old(self):
@@ -184,10 +227,11 @@ class GameController(object):
             self.nodes.getNodeFromTiles(2+11.5, 0+14))
         self.ghosts.pinky.setStartNode(
             self.nodes.getNodeFromTiles(2+11.5, 3+14))
-        # self.ghosts.inky.setStartNode(
-        #     self.nodes.getNodeFromTiles(0+11.5, 3+14))
-        # self.ghosts.clyde.setStartNode(
-        #     self.nodes.getNodeFromTiles(4+11.5, 3+14))
+        if GHOSTS4:
+            self.ghosts.inky.setStartNode(
+                self.nodes.getNodeFromTiles(2+11.5, 0+14))
+            self.ghosts.clyde.setStartNode(
+                self.nodes.getNodeFromTiles(2+11.5, 3+14))
         self.ghosts.setSpawnNode(self.nodes.getNodeFromTiles(2+11.5, 3+14))
 
         self.nodes.denyHomeAccess(self.pacman)
@@ -232,16 +276,21 @@ class GameController(object):
 
         self.frames += 1
         if self.frames > 3333:  # 1.1 minutes of play, 3333 frames at 50 fps
-            print("SUPER DUPER FORCING REFRESH")
+            if self.training:
+                print("SUPER DUPER FORCING REFRESH")
+            if self.score > 10000 and GRAPH:
+                self.lives -= 1
+                if self.lives <= 0:
+                    self.restartGame()
+            else:
+                print("Score", self.score)
             self.terminated = True
             self.frames = 0
+            self.pellets = PelletGroup(self.mazedata.obj.name+".txt")
+            self.setBackground()
             self.pause.setPause(
                 pauseTime=(0, 3)[self.human], func=self.resetLevel)
-            # if self.training:
-            #     self.ghosts.completeTraining(self, dt)
-            # self.ghosts.state = None
-            self.setBackground()
-            self.pellets = PelletGroup(self.mazedata.obj.name+".txt")
+
 
         afterPauseMethod = self.pause.update(dt)
         if afterPauseMethod is not None:
@@ -277,11 +326,12 @@ class GameController(object):
                 multiply = 3
 
             self.updateScore(pellet.points * multiply)
-            # if self.pellets.numEaten == 30:
-            #     self.ghosts.inky.startNode.allowAccess(RIGHT, self.ghosts.inky)
-            # if self.pellets.numEaten == 70:
-            #     self.ghosts.clyde.startNode.allowAccess(
-            #         LEFT, self.ghosts.clyde)
+            if GHOSTS4:
+                if self.pellets.numEaten == 30:
+                    self.ghosts.inky.startNode.allowAccess(RIGHT, self.ghosts.inky)
+                if self.pellets.numEaten == 70:
+                    self.ghosts.clyde.startNode.allowAccess(
+                        LEFT, self.ghosts.clyde)
             self.pellets.pelletList.remove(pellet)
             if pellet.name == POWERPELLET:
                 self.pacman.powered_up = True
@@ -295,6 +345,8 @@ class GameController(object):
                     self.pause.setPause(
                         pauseTime=(0, 3)[self.human], func=self.resetLevel)
                 else:
+                    if self.score > 25000 and GRAPH:
+                        self.restartGame()
                     self.pause.setPause(pauseTime=(
                         0, 3)[self.human], func=self.nextLevel)
 
@@ -318,7 +370,7 @@ class GameController(object):
                         self.lifesprites.removeImage()
                         self.pacman.die()
                         self.ghosts.hide()
-                        if TRAINING:
+                        if self.training:
                             # regen the pellets
                             self.pellets = PelletGroup(
                                 self.mazedata.obj.name+".txt")
@@ -391,7 +443,7 @@ class GameController(object):
         self.fruitCaptured = []
 
     def resetLevel(self):
-        if TRAINING:
+        if self.training:
             self.lives = 5
             # regen pellets
             self.pellets = PelletGroup(self.mazedata.obj.name+".txt")

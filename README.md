@@ -712,7 +712,7 @@ Le parti rilevanti sono:
 
   
 
-- pacman lv3: In grado di fuggire i fantasmi dal momento in cui si avvicinano, ma limitato da una risorsa virtuale (denominata mana), con una ricarica di 10 secondi. Attualmente configurato per poter fuggire per 64 frame prima di dover ricaricare il mana
+- pacman lv3: In grado di fuggire i fantasmi dal momento in cui si avvicinano, ma limitato da una risorsa virtuale (denominata mana), con una ricarica di 5 secondi. Attualmente configurato per poter fuggire per 32 frame prima di dover ricaricare il mana
 
   
 
@@ -777,7 +777,7 @@ I 4 livelli di pacman contro i fantasmi originali:
 
   
 
-I 4 livelli di pacman contro la mia versione dei fantasmi
+I 4 livelli di pacman contro i fantasmi DQN
 
   
 
