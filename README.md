@@ -763,7 +763,12 @@ Sostanzialmente viene analizzata la situazione di gioco appena precedente al mom
 
   
 
-Alcuni grafici che mostrano i risultati delle varie configurazioni:
+Alcuni grafici che mostrano i risultati delle varie configurazioni, rappresentando il punteggio di pacman in 100 partite.
+
+Pacman lv1: BLU
+Pacman lv2: ARANCIONE
+Pacman lv3: VERDE
+Pacman lv4: ROSSO
 
   
 
