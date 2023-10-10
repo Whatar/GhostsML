@@ -814,7 +814,9 @@ i 4 livelli di pacman contro una versione sperimentale con 4 fantasmi (dove ci s
 
   
 
-Una tecnica alternativa è quella della Double Deep Q Network (DDQN), di cui si tratta estensivamente in questo [paper](https://arxiv.org/abs/1509.06461), utile per stabilizzare il training e evitare l'overfitting, che in effetti è un problema che si è avuto modo di incontrare, quando durante il training dei fantasmi contro pacman di livello 4, data la difficoltà nel catturare il bersaglio, i fantasmi preferivano accontentarsi di incastrarlo in una sezione piccola del labirinto per poter mantenere una piccola distanza, senza però effettivamente mangiarlo.
+Una tecnica alternativa è quella della Double Deep Q Network (DDQN), di cui si tratta estensivamente in questo [paper](https://arxiv.org/abs/1509.06461), utile per stabilizzare il training e evitare l'overfitting, che in effetti è un problema che si è avuto modo di incontrare, quando durante il training dei fantasmi contro pacman di livello 4, data la difficoltà nel catturare il bersaglio, i fantasmi hanno spesso preferito accontentarsi di incastrarlo in una sezione piccola del labirinto per poter mantenere una piccola distanza, senza però effettivamente mangiarlo.
+
+Non è però escluso che l'instabilità possa essere diminuita con un engineering più accurato del reward, cercando per esempio di individuare i tratti che caratterizzano la decisione di non avvicinarsi troppo a pacman (come muoversi nella direzione opposta), e penalizzarli.
 
   
 
