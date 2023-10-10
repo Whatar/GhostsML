@@ -771,8 +771,7 @@ I 4 livelli di pacman contro i fantasmi originali:
 
   
 
-[pcm1 pcm2 pcm3 pcm4]
-
+![original_ai](https://github.com/Whatar/GhostsML/blob/main/imgs/score_original.png)
   
 
   
@@ -781,7 +780,7 @@ I 4 livelli di pacman contro i fantasmi DQN
 
   
 
-[pcm1 pcm2 pcm3 pcm4]
+![original_ai](https://github.com/Whatar/GhostsML/blob/main/imgs/score_AI.png)
 
   
 
@@ -791,7 +790,8 @@ i 4 livelli di pacman contro una versione sperimentale con 4 fantasmi (dove ci s
 
   
 
-[pcm1 pcm2 pcm3 pcm4]
+![original_ai](https://github.com/Whatar/GhostsML/blob/main/imgs/score_4Ghosts.png)
+
 
   
 
