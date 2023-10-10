@@ -401,7 +401,7 @@ e le si inseriscono in una lista più facilmente gestibile, di questo tipo:
 
 - La perdita di Huber viene utilizzata al posto della perdita quadratica per mitigare gli effetti degli outlier nei dati di addestramento, fornendo una maggiore robustezza all'algoritmo, alcuni dettagli aggiuntivi e riferimenti ad approfondimenti disponibili [qui](https://arxiv.org/pdf/2108.12627.pdf).
 In particolare, la perdita di Huber a differenza della perdita quadratica, è meno influenzata da valori estremi, come si può vedere nell'immagine sottostante.
-![Huber Loss](https://en.wikipedia.org/wiki/File:Huber_loss.svg)
+![Huber Loss](https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Huber_loss.svg/720px-Huber_loss.svg.png)
 
   
 
