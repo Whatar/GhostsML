@@ -761,6 +761,13 @@ Sostanzialmente viene analizzata la situazione di gioco appena precedente al mom
 
   
 
+Un grafico che rappresenta il reward totale medio per episodio dell'agente durante l'addestramento, in 100 partite, contro pacman lv3. In grigio la varianza.
+
+![reward_lv2](https://github.com/Whatar/GhostsML/blob/main/imgs/ghosts_nn_10runs.png)
+
+Contro pacman lv1, si nota che varianza è molto minore.
+
+![reward_lv2](https://github.com/Whatar/GhostsML/blob/main/imgs/ghosts_nn_easy.png)
   
 
 Alcuni grafici che mostrano i risultati delle varie configurazioni, rappresentando il punteggio di pacman in 100 partite.
