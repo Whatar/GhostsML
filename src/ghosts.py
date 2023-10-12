@@ -43,7 +43,9 @@ BATCH_SIZE = 64  # 128 is suggested batch size for DQN
 steps_done = 0
 
 # if GPU is to be used
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# D = "cuda" if torch.cuda.is_available() else "cpu"
+D = "cpu"
+device = torch.device(D)
 
 print("Using device:", device)
 
@@ -424,8 +426,11 @@ class GhostGroup(object):
         self.state = None
 
         self.training = training
-        if not self.training:
-            policy_net.load_state_dict(torch.load('ghosts.pt'))
+        if not self.training and AI:
+            if D == "cuda":
+                policy_net.load_state_dict(torch.load('ghosts_CUDA.pt'))
+            else:
+                policy_net.load_state_dict(torch.load('ghosts.pt'))
             policy_net.eval()
 
     def getState(self, game):
@@ -579,8 +584,12 @@ class GhostGroup(object):
         plt.plot(self.rewards)
         plt.savefig('ghosts_nn.png')
         # save the model
-        torch.save(policy_net.state_dict(),
-                   'ghosts.pt')
+        if D == "cuda":
+            torch.save(policy_net.state_dict(),
+                       'ghosts_CUDA.pt')
+        else:
+            torch.save(policy_net.state_dict(),
+                       'ghosts.pt')
 
     def __iter__(self):
         return iter(self.ghosts)

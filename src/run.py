@@ -81,7 +81,7 @@ class GameController(object):
         self.debugging = DEBUGGING
         self.games = 0
         self.terminated = False
-        self.pacman_strength = 0
+        self.pacman_strength = 2
         self.total_score = np.zeros(N_GAMES)
         self.mazedata = MazeData()
         self.frames = 0
