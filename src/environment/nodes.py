@@ -1,7 +1,8 @@
 import pygame
-from vector import Vector2
+from environment.vector import Vector2
 from constants import *
 import numpy as np
+import os
 
 
 class Node(object):
@@ -37,6 +38,7 @@ class NodeGroup(object):
         self.nodesLUT = {}
         self.nodeSymbols = ['+', 'P', 'n']
         self.pathSymbols = ['.', '-', '|', 'p']
+        level = os.path.join(os.path.dirname(__file__), level)
         data = self.readMazeFile(level)
         self.createNodeTable(data)
         self.connectHorizontally(data)

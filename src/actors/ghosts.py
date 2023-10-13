@@ -1,9 +1,10 @@
 from pygame.locals import *
-from vector import Vector2
+from environment.vector import Vector2
 from constants import *
-from entity import Entity
-from modes import ModeController
-from sprites import GhostSprites
+from environment.entity import Entity
+from environment.modes import ModeController
+from environment.sprites import GhostSprites
+import os
 
 import torch
 
@@ -427,10 +428,11 @@ class GhostGroup(object):
 
         self.training = training
         if not self.training and AI:
+            path = os.path.join(os.path.dirname(__file__), '../trained_models/ghosts.pt')
             if D == "cuda":
-                policy_net.load_state_dict(torch.load('ghosts_CUDA.pt'))
+                policy_net.load_state_dict(torch.load(path))
             else:
-                policy_net.load_state_dict(torch.load('ghosts.pt'))
+                policy_net.load_state_dict(torch.load(path, map_location=torch.device('cpu')))
             policy_net.eval()
 
     def getState(self, game):
@@ -583,13 +585,10 @@ class GhostGroup(object):
     def saveModel(self):
         plt.plot(self.rewards)
         plt.savefig('ghosts_nn.png')
+
         # save the model
-        if D == "cuda":
-            torch.save(policy_net.state_dict(),
-                       'ghosts_CUDA.pt')
-        else:
-            torch.save(policy_net.state_dict(),
-                       'ghosts.pt')
+        torch.save(policy_net.state_dict(),
+                       '../trained_models/ghosts.pt')
 
     def __iter__(self):
         return iter(self.ghosts)

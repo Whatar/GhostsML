@@ -1,9 +1,9 @@
 import pygame
 from pygame.locals import *
-from vector import Vector2
+from environment.vector import Vector2
 from constants import *
-from entity import Entity
-from sprites import PacmanSprites
+from environment.entity import Entity
+from environment.sprites import PacmanSprites
 import random
 
 MANA = 32

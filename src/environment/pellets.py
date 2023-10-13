@@ -1,7 +1,8 @@
 import pygame
-from vector import Vector2
+from environment.vector import Vector2
 from constants import *
 import numpy as np
+import os
 
 
 class Pellet(object):
@@ -49,6 +50,7 @@ class PelletGroup(object):
             powerpellet.update(dt)
 
     def createPelletList(self, pelletfile):
+        pelletfile = os.path.join(os.path.dirname(__file__), pelletfile)
         data = self.readPelletfile(pelletfile)
         for row in range(data.shape[0]):
             for col in range(data.shape[1]):

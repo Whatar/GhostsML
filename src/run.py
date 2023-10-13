@@ -1,22 +1,23 @@
 import sys
-import numpy as np
-import matplotlib.pyplot as plt
 import pygame
 from pygame.locals import *
-from constants import *
-from pacman import Pacman
-from nodes import NodeGroup
-from pellets import PelletGroup
-from cells import CellGroup
-from ghosts import GhostGroup
-from walls import WallGroup
-from fruit import Fruit
-from pauser import Pause
-from text import TextGroup
-from sprites import LifeSprites
-from sprites import MazeSprites
-from mazedata import MazeData
+import numpy as np
+import matplotlib.pyplot as plt
 import time
+
+from constants import *
+from environment.cells import CellGroup
+from environment.fruit import Fruit
+from environment.mazedata import MazeData
+from environment.nodes import NodeGroup
+from environment.pellets import PelletGroup
+from environment.sprites import LifeSprites, MazeSprites
+from environment.text import TextGroup
+from environment.walls import WallGroup
+
+from actors.pacman import Pacman
+from actors.ghosts import GhostGroup
+from pauser import Pause
 
 
 # for plotting, we need to know the score at each time step

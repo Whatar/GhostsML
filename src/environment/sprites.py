@@ -1,7 +1,9 @@
 import pygame
 from constants import *
 import numpy as np
-from animation import Animator
+import os
+
+from environment.animation import Animator
 
 BASETILEWIDTH = 16
 BASETILEHEIGHT = 16
@@ -9,7 +11,7 @@ DEATH = 5
 
 class Spritesheet(object):
     def __init__(self):
-        self.sheet = pygame.image.load("spritesheet_mspacman.png").convert()
+        self.sheet = pygame.image.load(os.path.join(os.path.dirname(__file__), 'resources/spritesheet.png')).convert()
         transcolor = self.sheet.get_at((0,0))
         self.sheet.set_colorkey(transcolor)
         width = int(self.sheet.get_width() / BASETILEWIDTH * TILEWIDTH)
@@ -141,6 +143,8 @@ class LifeSprites(Spritesheet):
 class MazeSprites(Spritesheet):
     def __init__(self, mazefile, rotfile):
         Spritesheet.__init__(self)
+        mazefile = os.path.join(os.path.dirname(__file__), mazefile)
+        rotfile = os.path.join(os.path.dirname(__file__), rotfile)
         self.data = self.readMazeFile(mazefile)
         self.rotdata = self.readMazeFile(rotfile)
 
