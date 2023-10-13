@@ -1,4 +1,5 @@
 # ignore pycache in /src
 /src/__pycache__/
 /__pycache__/
-```
+/src/actors/__pycache__/
+/src/environment/__pycache__/
